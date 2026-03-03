@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abner Sande | Engenheiro de Dados</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #050810;
+      --surface:  #0b0f1e;
+      --card:     #0f1525;
+      --border:   #1a2540;
+      --navy:     #0d1b3e;
+      --blue:     #1e40af;
+      --accent:   #3b82f6;
+      --glow:     #60a5fa;
+      --gold:     #f59e0b;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --font-d:   'Playfair Display', serif;
+      --font-m:   'IBM Plex Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-m);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* STARFIELD BG */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(30,64,175,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(59,130,246,0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* GRID */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(30,64,175,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,64,175,0.06) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 56px;
+      background: rgba(5,8,16,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-d);
+      font-size: 18px; font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--glow); }
+
+    section { position: relative; z-index: 1; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      align-items: center;
+      gap: 60px;
+      padding: 120px 56px 80px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.7s ease both;
+    }
+    .eyebrow-line { width: 48px; height: 1px; background: var(--accent); }
+    .eyebrow-text {
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .hero-title {
+      font-family: var(--font-d);
+      font-size: clamp(48px, 5.5vw, 80px);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .hero-title .last-name {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--accent);
+    }
+
+    .hero-role {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .hero-role span { color: var(--glow); }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.9;
+      margin-bottom: 48px;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .hero-desc strong { color: var(--text); }
+
+    .hero-cta {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent);
+      color: #fff;
+      padding: 13px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-family: var(--font-m);
+      font-size: 13px; font-weight: 500;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--glow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(59,130,246,0.35);
+    }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 13px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-family: var(--font-m);
+      font-size: 13px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* HERO PHOTO CARD */
+    .hero-photo-wrap {
+      display: flex; flex-direction: column; gap: 16px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .photo-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--card);
+    }
+    .photo-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(5,8,16,0.9) 100%);
+      z-index: 1;
+    }
+    .photo-card img {
+      width: 100%; height: 420px;
+      object-fit: cover; object-position: top;
+      display: block;
+      filter: grayscale(20%) contrast(1.05);
+    }
+    .photo-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 24px;
+      z-index: 2;
+    }
+    .photo-name {
+      font-family: var(--font-d);
+      font-size: 22px; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .photo-company {
+      font-size: 11px; color: var(--accent);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+
+    .hero-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: var(--accent); }
+    .stat-num {
+      font-family: var(--font-d);
+      font-size: 28px; font-weight: 900;
+      color: var(--glow);
+      line-height: 1;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* TICKER */
+    .ticker-wrap {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      overflow: hidden; padding: 12px 0;
+    }
+    .ticker {
+      display: flex; gap: 0;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-item {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0 28px;
+      font-size: 11px; color: var(--muted);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .ticker-item::before { content: '◆'; color: var(--accent); font-size: 7px; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* SECTION HEADER */
+    .section-wrap { max-width: 1280px; margin: 0 auto; padding: 100px 56px; }
+
+    .section-header { margin-bottom: 56px; }
+    .section-eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 11px; color: var(--accent);
+      letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .section-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+    .section-title {
+      font-family: var(--font-d);
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.05;
+    }
+
+    /* SERVICE */
+    .service-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 40px 44px;
+      transition: border-color 0.3s, transform 0.3s;
+      max-width: 720px;
+    }
+    .service-card:hover { border-color: var(--glow); transform: translateX(6px); }
+    .service-icon { font-size: 36px; margin-bottom: 20px; }
+    .service-name {
+      font-family: var(--font-d);
+      font-size: 24px; font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .service-desc { color: var(--muted); font-size: 14px; line-height: 1.9; margin-bottom: 24px; }
+    .service-tools {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .tool-tag {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.2);
+      color: var(--glow);
+      padding: 4px 14px;
+      border-radius: 4px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+
+    /* PROJECT */
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      max-width: 720px;
+    }
+    .project-card:hover { border-color: var(--glow); transform: translateY(-4px); }
+
+    .project-visual {
+      background: linear-gradient(135deg, #0d1b3e 0%, #0f1525 100%);
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(59,130,246,0.15) 0%, transparent 70%);
+    }
+
+    /* Network nodes animation */
+    .node {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: relative;
+      animation: nodePulse 2s ease infinite;
+    }
+    .node::after {
+      content: '';
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      opacity: 0.3;
+      animation: nodeRing 2s ease infinite;
+    }
+    .node:nth-child(2) { background: var(--glow); animation-delay: 0.4s; width: 8px; height: 8px; }
+    .node:nth-child(3) { background: var(--gold); animation-delay: 0.8s; width: 10px; height: 10px; }
+    .node:nth-child(4) { background: var(--accent); animation-delay: 1.2s; width: 6px; height: 6px; }
+    .node:nth-child(5) { background: var(--glow); animation-delay: 1.6s; }
+
+    @keyframes nodePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+    @keyframes nodeRing {
+      0% { transform: scale(1); opacity: 0.3; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    .net-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
+      width: 80px;
+    }
+    .net-line:nth-child(6) { top: 40%; left: 15%; transform: rotate(-15deg); }
+    .net-line:nth-child(7) { top: 55%; left: 45%; transform: rotate(20deg); }
+    .net-line:nth-child(8) { top: 35%; left: 60%; transform: rotate(-8deg); }
+
+    .project-body { padding: 32px 36px; }
+    .project-cat {
+      font-size: 11px; color: var(--accent);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .project-name {
+      font-family: var(--font-d);
+      font-size: 20px; font-weight: 700;
+      margin-bottom: 12px; line-height: 1.3;
+    }
+    .project-desc { color: var(--muted); font-size: 13px; line-height: 1.9; }
+
+    .metric-row {
+      display: flex; gap: 28px;
+      margin-top: 24px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .metric { text-align: center; }
+    .metric-val {
+      font-family: var(--font-d);
+      font-size: 22px; font-weight: 900;
+      color: var(--gold);
+    }
+    .metric-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+    /* CONTACT */
+    .contact-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .contact-inner {
+      max-width: 1280px; margin: 0 auto;
+      padding: 100px 56px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .contact-title {
+      font-family: var(--font-d);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 900; letter-spacing: -1.5px;
+      line-height: 1.05; margin-bottom: 20px;
+    }
+    .contact-title .hl { color: var(--accent); }
+    .contact-desc { color: var(--muted); font-size: 14px; line-height: 1.9; margin-bottom: 36px; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 12px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none; color: var(--text);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); transform: translateX(6px); }
+    .contact-link-icon { font-size: 20px; }
+    .cl-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .cl-value { font-family: var(--font-d); font-weight: 700; font-size: 14px; margin-top: 2px; }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      padding: 28px 56px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; color: var(--muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 40px; }
+      .hero-photo-wrap { order: -1; }
+      .photo-card img { height: 300px; }
+      .section-wrap { padding: 80px 24px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; padding: 80px 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 90px 16px 48px; }
+      .hero-title { font-size: 42px; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .section-wrap { padding: 60px 16px; }
+      .section-title { font-size: 30px; }
+      .service-card { padding: 28px 24px; }
+      .project-body { padding: 24px 20px; }
+      .metric-row { gap: 20px; }
+      .contact-inner { padding: 60px 16px; }
+      .contact-title { font-size: 32px; }
+      footer { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Abner<span>.</span>Sande</div>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="sobre">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Disponível para projetos freelance</span>
+      </div>
+      <h1 class="hero-title">
+        Abner
+        <span class="last-name">Sande</span>
+      </h1>
+      <p class="hero-role">Engenheiro de Dados · <span>BBTS · Brasília/DF</span></p>
+      <p class="hero-desc">
+        <strong>8 anos de experiência</strong> em engenharia de dados, com foco em soluções estratégicas que centralizam informações e criam conexões inteligentes entre fontes diversas. Especialista em monitoramento de ativos, análise em tempo real e arquiteturas de dados escaláveis.
+      </p>
+      <div class="hero-cta">
+        <a href="https://wa.me/5561983191418?text=Olá%20Abner!%20Vi%20seu%20portfólio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." target="_blank" class="btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chamar no WhatsApp
+        </a>
+        <a href="#projetos" class="btn-outline">Ver projetos →</a>
+      </div>
+    </div>
+
+    <div class="hero-photo-wrap">
+      <div class="photo-card">
+        <img src="https://nsdrmiygaujeknszezgr.supabase.co/storage/v1/object/public/profile-photos/photos/1772504434037.png" alt="Abner Sande"/>
+        <div class="photo-overlay">
+          <div class="photo-name">Abner Sande</div>
+          <div class="photo-company">Engenheiro de Dados · BBTS</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Anos de experiência</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">9k+</div>
+          <div class="stat-label">Ativos monitorados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">BSB</div>
+          <div class="stat-label">Brasília · Remoto</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">ADS</div>
+          <div class="stat-label">UNIP · Graduado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Engenharia de Dados</span>
+    <span class="ticker-item">Databricks</span>
+    <span class="ticker-item">Metabase</span>
+    <span class="ticker-item">Análise de Dados</span>
+    <span class="ticker-item">Monitoramento em Tempo Real</span>
+    <span class="ticker-item">Ativos de Rede</span>
+    <span class="ticker-item">Indicadores Estratégicos</span>
+    <span class="ticker-item">BBTS</span>
+    <span class="ticker-item">Brasília/DF</span>
+    <span class="ticker-item">Freelancer</span>
+    <span class="ticker-item">Engenharia de Dados</span>
+    <span class="ticker-item">Databricks</span>
+    <span class="ticker-item">Metabase</span>
+    <span class="ticker-item">Análise de Dados</span>
+    <span class="ticker-item">Monitoramento em Tempo Real</span>
+    <span class="ticker-item">Ativos de Rede</span>
+    <span class="ticker-item">Indicadores Estratégicos</span>
+    <span class="ticker-item">BBTS</span>
+    <span class="ticker-item">Brasília/DF</span>
+    <span class="ticker-item">Freelancer</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="servicos">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-eyebrow">O que ofereço</div>
+      <h2 class="section-title">Serviços</h2>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <h3 class="service-name">Análise de Dados</h3>
+      <p class="service-desc">Analiso dados de diversas fontes de forma estratégica e pontual, centralizando tudo e criando um link entre as informações. Transformo dados dispersos em visões claras e acionáveis para suportar decisões de negócio com precisão.</p>
+      <div class="service-tools">
+        <span class="tool-tag">Databricks</span>
+        <span class="tool-tag">Metabase</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projetos" style="background: var(--surface); border-top: 1px solid var(--border);">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-eyebrow">Portfólio</div>
+      <h2 class="section-title">Projetos</h2>
+    </div>
+
+    <div class="project-card">
+      <div class="project-visual">
+        <div class="net-line"></div>
+        <div class="net-line"></div>
+        <div class="net-line"></div>
+        <div class="node"></div>
+        <div class="node"></div>
+        <div class="node"></div>
+        <div class="node"></div>
+        <div class="node"></div>
+      </div>
+      <div class="project-body">
+        <div class="project-cat">Monitoramento · Infraestrutura · Tempo Real</div>
+        <h3 class="project-name">Monitoramento de Ativos de Rede em Tempo de Coleta</h3>
+        <p class="project-desc">Solução de monitoramento de ativos de telefonia que verifica em tempo de coleta a disponibilidade de mais de 9 mil ativos distribuídos em todo o país. O sistema exibe métricas de Online/Offline e status "Não monitorado", permitindo visibilidade total e resposta ágil a incidentes de infraestrutura.</p>
+        <div class="metric-row">
+          <div class="metric">
+            <div class="metric-val">9.000+</div>
+            <div class="metric-lbl">Ativos monitorados</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">Real-time</div>
+            <div class="metric-lbl">Coleta de dados</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">Nacional</div>
+            <div class="metric-lbl">Cobertura</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contato">
+  <div class="contact-section">
+    <div class="contact-inner">
+      <div>
+        <div class="section-eyebrow" style="margin-bottom:16px">Contato</div>
+        <h2 class="contact-title">Vamos trabalhar<br><span class="hl">juntos?</span></h2>
+        <p class="contact-desc">Tem um projeto em mente? Me manda uma mensagem contando o que você precisa. Respondo em até 24h.</p>
+        <a href="https://wa.me/5561983191418?text=Olá%20Abner!%20Vi%20seu%20portfólio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." target="_blank" class="btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chamar no WhatsApp
+        </a>
+      </div>
+
+      <div class="contact-links">
+        <a href="https://wa.me/5561983191418" target="_blank" class="contact-link">
+          <span class="contact-link-icon">📱</span>
+          <div>
+            <div class="cl-label">WhatsApp</div>
+            <div class="cl-value">(61) 98319-1418</div>
+          </div>
+        </a>
+        <a id="email-abner" href="#" class="contact-link">
+          <span class="contact-link-icon">✉️</span>
+          <div>
+            <div class="cl-label">E-mail</div>
+            <div class="cl-value">abnsande&#64;gmail.com</div>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/abnersande" target="_blank" class="contact-link">
+          <span class="contact-link-icon">💼</span>
+          <div>
+            <div class="cl-label">LinkedIn</div>
+            <div class="cl-value">abnersande</div>
+          </div>
+        </a>
+        <a href="https://github.com/abnin" target="_blank" class="contact-link">
+          <span class="contact-link-icon">🐙</span>
+          <div>
+            <div class="cl-label">GitHub</div>
+            <div class="cl-value">github.com/abnin</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Abner Sande — Engenheiro de Dados</span>
+  <span>Brasília, DF · Brasil</span>
+</footer>
+
+<script>
+(function() {
+  var u = 'abnsande';
+  var d = 'gmail' + '.' + 'com';
+  var el = document.getElementById('email-abner');
+  if (el) el.setAttribute('href', 'mailto:' + u + '@' + d);
+})();
+</script>
+
+</body>
+</html>
