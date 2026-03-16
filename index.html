@@ -263,6 +263,31 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* MECNA VISUAL */
+    .mecna-visual {
+      background: linear-gradient(135deg, #0d1b3e 0%, #0f1525 100%);
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mecna-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(245,158,11,0.12) 0%, transparent 70%);
+    }
+    .gear {
+      font-size: 40px;
+      position: relative; z-index: 1;
+      animation: gearSpin 8s linear infinite;
+      filter: drop-shadow(0 0 8px rgba(245,158,11,0.4));
+    }
+    .gear.reverse { animation-direction: reverse; font-size: 28px; animation-duration: 6s; }
+    @keyframes gearSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .projects-grid { display: flex; flex-direction: column; gap: 32px; }
+
     /* TICKER */
     .ticker-wrap {
       position: relative; z-index: 1;
@@ -629,6 +654,7 @@
       <h2 class="section-title">Projetos</h2>
     </div>
 
+    <div class="projects-grid">
     <div class="project-card">
       <div class="project-visual">
         <div class="net-line"></div>
@@ -660,6 +686,34 @@
         </div>
       </div>
     </div>
+
+    <div class="project-card">
+      <div class="mecna-visual">
+        <div class="gear">⚙️</div>
+        <div class="gear reverse">⚙️</div>
+        <div class="gear" style="font-size:22px; animation-duration:5s;">⚙️</div>
+      </div>
+      <div class="project-body">
+        <div class="project-cat" style="color: var(--gold);">PWA · CRM · Oficinas Mecânicas</div>
+        <h3 class="project-name">Mecna — Sistema para Oficinas Mecânicas</h3>
+        <p class="project-desc">CRM PWA completo para gestão de oficinas mecânicas. Permite cadastro de clientes e veículos, abertura e acompanhamento de ordens de serviço, controle de status, histórico completo por veículo e relatórios gerenciais. Desenvolvido com Next.js, Supabase e autenticação segura via Magic Link e Google OAuth.</p>
+        <div class="metric-row">
+          <div class="metric">
+            <div class="metric-val" style="color: var(--gold);">PWA</div>
+            <div class="metric-lbl">Instalável</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val" style="color: var(--gold);">OS</div>
+            <div class="metric-lbl">Ordens de Serviço</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val" style="color: var(--gold);">LGPD</div>
+            <div class="metric-lbl">Conformidade</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /projects-grid -->
   </div>
 </section>
 
